@@ -52,11 +52,9 @@ class Api::RecipesController < ApplicationController
   end
 
   def destroy
-
     @recipe = Recipe.find(params[:id])
     @recipe.destroy
     render json: {message: "Recipe Deleted"}
-    
   end
 
 end

@@ -27,10 +27,23 @@ class Api::UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.username = params[:username] || @user.username
     @user.email = params[:email] || @user.email
-    @user.username = params[:username] || @user.username
-    @user.username = params[:username] || @user.username
-    @user.username = params[:username] || @user.username
+    @user.password = params[:password] || @user.password
+    @user.password_confirmation = params[:password_confirmation] || @user.password_confirmation
+    @user.image_url = params[:image_url] || @user.image_url
+    @user.bio = params[:bio] || @user.bio
+
+    if @user.save
+      render json: {message: 'User created successfully'}, status: :created
+    else
+      render json: {errors: @user.errors.full_messages}, status: :bad_request
+    end
     
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    render json: {message: "User Deleted"}
   end
 
 end
