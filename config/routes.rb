@@ -12,6 +12,22 @@ Rails.application.routes.draw do
     post "/recipes" => "recipes#create"
     patch "/recipes/:id" => "recipes#update"
     delete "/recipes/:id" => "recipes#destroy"
+
+    get "/suggestions" => "suggestions#index"
+    get "/suggestions/:id" => "suggestions#show"
+    post "/suggestions" => "suggestions#create"
+    patch "/suggestions/:id" => "suggestions#update"
+    delete "/suggestions/:id" => "suggestions#destroy"
+
+    get "/comments" => "comments#index"
+    get "/comments/:id" => "comments#show"
+    post "/comments" => "comments#create"
+    patch "/comments/:id" => "comments#update"
+    delete "/comments/:id" => "comments#destroy"
+
+    get "/votes/:id" => "votes#show"
+    post "/votes" => "votes#create"
+    delete "/votes/:id" => "votes#destroy"
   
   end
 end

@@ -1,0 +1,1 @@
+json.partial! "suggestion.json.jbuilder", suggestion: @suggestion
