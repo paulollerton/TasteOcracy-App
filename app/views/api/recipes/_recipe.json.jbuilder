@@ -1,4 +1,5 @@
 json.id recipe.id
+json.user_id recipe.user_id
 json.title recipe.title
 json.blurb recipe.blurb
 json.category recipe.category
@@ -6,4 +7,4 @@ json.prep_time recipe.prep_time
 json.cook_time recipe.cook_time
 json.ingredients recipe.ingredients
 json.directions recipe.directions
-json.user_id recipe.user_id
+json.image_url recipe.image_url

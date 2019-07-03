@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     get "/votes/:id" => "votes#show"
     post "/votes" => "votes#create"
     delete "/votes/:id" => "votes#destroy"
+
+    post "/sessions" => "sessions#create"
   
   end
 end
