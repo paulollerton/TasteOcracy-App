@@ -11,7 +11,6 @@ class Api::SuggestionsController < ApplicationController
   end
 
   def create
-
     if current_user
       @suggestion = Suggestion.new(
         user_id: current_user.id,
@@ -19,49 +18,41 @@ class Api::SuggestionsController < ApplicationController
         content: params[:content],
         vote_count: params[:vote_count],
         )
+      if @suggestion.save
+        render 'show.json.jbuilder'
+      else 
+        render json: {errors: @suggestion.errors.full_messages}, status: :unprocessable_entity
+      end
     else
-      render json: ["Please login or create an account to post a suggestion."]
+      render json: {errors: "Self-destruct in 5..."}
     end
-
-    if @suggestion.save
-      render "show.json.jbuilder"
-    else
-      render json: {errors: @suggestion.errors.full_messages}, status: :unprocessable_entity
-    end
-
   end
 
   def update
-
-    if current_user
-      @suggestion = Suggestion.find(params[:id])
-
+    @suggestion = Suggestion.find(params[:id])
+    if current_user.id == @suggestion.user_id.to_i
       @suggestion.user_id = current_user.id || @suggestion.user_id
       @suggestion.recipe_id = params[:recipe_id] || @suggestion.recipe_id
       @suggestion.content = params[:content] || @suggestion.content
       @suggestion.vote_count = params[:vote_count] || @suggestion.vote_count
+      if @suggestion.save
+        render "show.json.jbuilder"
+      else
+        render json: {errors: @suggestion.errors.full_messages}, status: :unprocessable_entity
+      end
     else
       render json: ["Please login to edit this suggestion."]
     end
-
-    if @suggestion.save
-      render "show.json.jbuilder"
-    else
-      render json: {errors: @suggestion.errors.full_messages}, status: :unprocessable_entity
-    end
-
   end
 
   def destroy
-
-    if current_user
-      @suggestion = Suggestion.find(params[:id])
+    @suggestion = Suggestion.find(params[:id])
+    if current_user.id == @suggestion.user_id.to_i
       @suggestion.destroy
       render json: {message: "Suggestion Deleted"}
     else
       render json: ["Please login to delete this suggestion."]
     end
-
   end
 
 end
