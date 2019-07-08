@@ -1,4 +1,5 @@
 class Api::RecipesController < ApplicationController
+  
   before_action :authenticate_user, except: [:index, :show]
 
   def index
@@ -12,7 +13,6 @@ class Api::RecipesController < ApplicationController
   end
 
   def create
-
     if current_user
       @recipe = Recipe.new(
         user_id: current_user.id,
@@ -25,23 +25,21 @@ class Api::RecipesController < ApplicationController
         directions: params[:directions],
         image_url: params[:image_url]
         )
+      if @recipe.save
+        render 'show.json.jbuilder'
+      else 
+        render json: {errors: @student.errors.full_messages}, status: :unprocessable_entity
+      end
     else
-      render json: ["Please login or create an account to submit a recipe."]
-    end
-
-    if @recipe.save
-      render "show.json.jbuilder"
-    else
-      render json: {errors: @recipe.errors.full_messages}, status: :unprocessable_entity
+      render json: {errors: "Self-destruct in 5..."}
     end
 
   end
 
   def update
     
-    if current_user
-      @recipe = Recipe.find(params[:id])
-
+    @recipe = Recipe.find(params[:id])
+    if current_user.id == @recipe.user_id.to_i 
       @recipe.user_id = current_user.id || @recipe.user_id
       @recipe.title = params[:title] || @recipe.title
       @recipe.blurb = params[:blurb] || @recipe.blurb
@@ -51,22 +49,21 @@ class Api::RecipesController < ApplicationController
       @recipe.ingredients = params[:ingredients] || @recipe.ingredients
       @recipe.directions = params[:directions] || @recipe.directions
       @recipe.image_url = params[:image_url] || @recipe.image_url
+      if @recipe.save
+        render "show.json.jbuilder"
+      else
+        render json: {errors: @recipe.errors.full_messages}, status: :unprocessable_entity
+      end
     else
-      render json: ["Please login to edit this recipe."]
-    end
-
-    if @recipe.save
-      render "show.json.jbuilder"
-    else
-      render json: {errors: @recipe.errors.full_messages}, status: :unprocessable_entity
+      render json: {message: "Please login to edit this recipe."}
     end
 
   end
 
   def destroy
 
-    if current_user
-      @recipe = Recipe.find(params[:id])
+    @recipe = Recipe.find(params[:id])
+    if current_user.id == @recipe.user_id.to_i
       @recipe.destroy
       render json: {message: "Recipe Deleted"}
     else
