@@ -2,6 +2,11 @@ class Api::UsersController < ApplicationController
 
   before_action :authenticate_user, only: [:update, :destroy] 
 
+  def profile
+    @user = current_user
+    render "show.json.jbuilder"
+  end
+
   def show
     user_id = params[:id]
     @user = User.find_by(id: user_id)
@@ -31,7 +36,7 @@ class Api::UsersController < ApplicationController
       @user.username = params[:username] || @user.username
       @user.email = params[:email] || @user.email
       @user.password = params[:password] || @user.password_digest
-      @user.password_confirmation = params[:password_confirmation]
+      @user.password_confirmation = params[:password_confirmation] || @user.password_confirmation
       @user.image_url = params[:image_url] || @user.image_url
       @user.bio = params[:bio] || @user.bio
 

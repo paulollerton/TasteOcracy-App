@@ -8,3 +8,4 @@ json.cook_time recipe.cook_time
 json.ingredients recipe.ingredients
 json.directions recipe.directions
 json.image_url recipe.image_url
+json.comments recipe.comments

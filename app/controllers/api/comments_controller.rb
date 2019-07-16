@@ -16,7 +16,8 @@ class Api::CommentsController < ApplicationController
       @comment = Comment.new(
         user_id: params[:user_id],
         recipe_id: params[:recipe_id],
-        content: params[:content]
+        content: params[:content],
+        username: params[:username]
         )
       if @comment.save
         render "show.json.jbuilder"

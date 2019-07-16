@@ -1,5 +1,7 @@
 class Api::SuggestionsController < ApplicationController
 
+  before_action :authenticate_user, only: [:create, :update, :destroy]
+
   def index
     @suggestions = Suggestion.all
     render "index.json.jbuilder"
@@ -16,7 +18,7 @@ class Api::SuggestionsController < ApplicationController
         user_id: current_user.id,
         recipe_id: params[:recipe_id],
         content: params[:content],
-        vote_count: params[:vote_count],
+        vote_count: params[:vote_count]
         )
       if @suggestion.save
         render 'show.json.jbuilder'
