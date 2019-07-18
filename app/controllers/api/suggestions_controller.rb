@@ -15,7 +15,7 @@ class Api::SuggestionsController < ApplicationController
   def create
     if current_user
       @suggestion = Suggestion.new(
-        user_id: current_user.id,
+        user_id: params[:user_id],
         recipe_id: params[:recipe_id],
         content: params[:content],
         vote_count: params[:vote_count]
